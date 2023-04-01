@@ -1,0 +1,59 @@
+{% extends 'shop/base.html' %}
+
+{% block title %} {% endblock %}
+
+{% block body %}
+
+<style>
+    .container{
+        display: flex;
+        justify-content: space-between;
+       
+    }
+    .shopping-details{
+        height: auto;
+        width: 50%;
+        border: 1px solid black;
+        padding: 20px;
+    }
+    .account-details{
+        width: 50%;
+        border: 1px solid black;
+        padding: 20px;
+        height: auto;
+
+    }
+</style>
+<div class="container">
+    <div class="shopping-details">
+        <h2>Shipping Informaction</h2><hr>
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Update">
+        </form>
+
+    </div>
+    <div class="account-details">
+        <h2>Account Informaction</h2><hr>
+        <p>Username: <strong>{{user.username}}</strong></p>
+        {% if user.email %}
+        <p>Email: <strong>{{user.email}}</strong></p>
+        {% else %}
+        <p>Email: <strong>Not Provided</strong></p>
+        <br>
+        {% endif %}
+        <br>
+        <h4>Chnage Password</h4>
+        <br>
+        <form method="POST">
+            {% csrf_token %}
+            {{passwordChange.as_p}}
+            <input type="submit" value="Update">
+        </form>
+
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends 'shop/base.html' %}
+{% block title %}products details {% endblock %}
+
+{% block body %}
+<style>
+  .product-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .card{
+    width: 400px;
+    height: 350px;
+    margin-top: 50px;
+  }
+
+
+</style>
+
+<body class="p-3 m-0 border-0 bd-example">
+
+<div class="row">
+  <div class="col-md-6">
+    <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="{{object.first_images.url}}"  height="400px" class="d-block w-100" alt="{{object}}">
+        </div>
+        <div class="carousel-item">
+          {% if third_images %}
+          <img src="{{object.third_images.url}}" height="400px" class="d-block w-100" alt="">
+          {% endif %}
+        </div>
+        <div class="carousel-item">
+          {% if second_images %}
+          <img src="{{object.second_images.url}}" height="400px" class="d-block w-100" alt="">
+          {% endif %}
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <h2>{{object.title}}</h2>
+    <p style="width: 400px">{{object.description}}</p>
+    <p><strong>Price: ${{object.price}}</strong></p>
+    <div class="mb-3">
+      <label class="form-label">Select size:</label>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="size" id="smallRadio" value="small" checked>
+        <label class="form-check-label" for="smallRadio">Small</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="size" id="mediumRadio" value="medium">
+        <label class="form-check-label" for="mediumRadio">Medium</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="size" id="largeRadio" value="large">
+        <label class="form-check-label" for="largeRadio">Large</label>
+      </div>
+    </div>
+    {% if messages %}
+    {% for messages in messages %}
+
+    <div class="alert alert-primary" role="alert">
+      {{messages}}
+    </div>
+    {% endfor %}
+    {% endif %}
+    <form method="post" action=".">
+      {% csrf_token %}
+
+      <div class="field has-addons">
+        <div class="control">
+          <input type="hidden" name="quantity" value="1" class="input" min="1">
+        </div>
+
+        <div class="control">
+          <button class="button is-dark is-uppercase">Add to cart</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+<!--related prducts section-->
+
+<div class="product-container">
+  {% for related_products in related_products %}
+  <div class="card">
+    <a href="{{related_products.get_absolute_url}}">
+      <img class="bd-placeholder-img card-img-top" width="100%" height="200"
+           src="{{ related_products.first_images.url }}">
+      <div class="card-body">
+        <h5 class="card-title font-weight-bold"> $ {{related_products.price}}</h5>
+        <p class="card-text">{{related_products.title |truncatechars:40}}</p>
+        <p class="card-text">{{related_products.description|truncatechars:70}}</p>
+      </div>
+    </a>
+
+
+  </div>
+  {% endfor %}
+
+
+
+</div>
+
+
+
+</body>
+{% endblock %}

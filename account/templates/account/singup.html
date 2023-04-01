@@ -1,0 +1,18 @@
+{% extends 'shop/base.html' %}
+{% block body %}
+<h1>User login</h1>
+<form action="" method="post">
+    {% csrf_token %}
+   {{form.as_p}}
+   <input type="submit" value="Singup">
+</form>
+{% if messages %}
+<ul>
+    {% for message in messages %}
+    <div class="alert alert-warning" role="alert">
+        <li>{{ message }}</li>
+    </div>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

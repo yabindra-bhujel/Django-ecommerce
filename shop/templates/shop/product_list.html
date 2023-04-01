@@ -1,0 +1,50 @@
+{% extends "shop/base.html" %}
+{% block title %}Products list {% endblock %}
+
+{% block body %}
+<style>
+    .card{
+        margin-left: 20px;
+    }
+    /* For screens smaller than 600px */
+    @media (max-width: 600px) {
+        .row-cols-1 > .col {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+    }
+
+    /* For screens between 600px and 1000px */
+    @media (min-width: 600px) and (max-width: 1000px) {
+        .row-cols-1 > .col {
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+    }
+
+</style>
+
+
+
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            {% for object_list in object_list %}
+            <div class="col">
+                <div class="card">
+                    <a href="">
+                        <img class="bd-placeholder-img card-img-top" width="100%" height="200" src="{{ object_list.first_images.url }}">
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bold"> $ {{object_list.price}}</h5>
+                            <p class="card-text">{{object_list.title|truncatechars:20}}</p>
+<!--                            <p class="card-text">{{object_list.description|truncatechars:50}}</p>-->
+                            <a href="{% url 'allProduct'%}"><button type="button" class="btn btn-outline-primary">Find More.</button></a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+
+
+
+{% endblock %}

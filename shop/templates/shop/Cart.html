@@ -1,0 +1,68 @@
+
+{% extends 'shop/base.html' %}
+
+{% block title %}Cart | {% endblock %}
+
+{% block body %}
+<main>
+
+
+      {% if cart_item %}
+      <div class="box mb-6">
+        <div class="table">
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">{{ forloop.counter }}</th>
+                <th scope="col">Products</th>
+                <th scope="col">Price</th>
+                <th scope="col">Total Price</th>
+                <th scope="col">Remove</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for cart_item in cart_item %}
+              <tr>
+                <th scope="row">1</th>
+              <td> <a href="{{ cart_item.product.get_absolute_url}}"><img src="{{cart_item.product.first_images.url}}" height="100px" width="100px" ></a>
+                {{cart_item.product.title}}</td>
+              <td><strong>{{cart_item.product.price}}</strong></td>
+                <td><a href="?change_quantity={{ cart_item.id }}&quantity=-1"> - </a>
+                {{ cart_item.quantity }}
+                <a href="?change_quantity={{ cart_item.id }}&quantity=1"> +</a></td>
+                <td ><a href="?remove_from_cart={{ cart_item.id }}" class="delete"><i class="fa-solid fa-trash "></i></a> </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+      
+
+
+
+            <tfoot>
+            <tr>
+              <td></td>
+              <td></td>
+              <td><strong>Total </strong></td>
+              <td><strong >{{ cart_item|length}}</strong></td>
+              <td colspan="2"><strong>¥ {{ cart_item.get_total_cost }}</strong></td>
+            </tr>
+            </tfoot>
+            </table>
+     
+        </div>
+      </div>
+
+
+      
+      <button class="btn btn-primary"><a class="text-white" href="/">Shopping</a></button>
+        <button class="btn btn-success"><a class="text-light"    href="{% url 'checkout' id=request.user.id%}">Checkout</a></button>
+
+
+    {% else %}
+    <h3>Your cart is empty...</h3>
+    <button class="btn btn-primary"><a class="text-white" href="/">Shopping</a></button>
+
+</main>
+{% endif %}
+{% endblock %}
