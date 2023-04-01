@@ -1,0 +1,1 @@
+simple Django Ecommerce Application
