@@ -20,13 +20,10 @@ def categoryBase(request):
 
 
 def product_list(request):
-    cart = Cart(request)
-    print(len(cart))
     queryset = Product.objects.all().order_by(
         '-posted_at')[:100]
     context = {
         "object_list": queryset,
-        "cart": cart
     }
     return render(request, 'shop/product_list.html', context)
 
