@@ -69,8 +69,6 @@ def cancel(request):
 @csrf_exempt
 def stripe_webhook(request):
     cart = Cart(request)
-    user = request.user
-    print(user)
     stripe.api_key = settings.STRIPE_SECRET_KEY
     endpoint_secret = settings.STRIPE_ENDPOINT_SECRET
     sig_header = request.headers['Stripe-Signature']
@@ -90,7 +88,6 @@ def stripe_webhook(request):
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
         metadata = event['data']['object']['metadata']
-        print(metadata)
 
         order = Order.objects.create(
             order_no=event['data']['object']['id'],
@@ -99,7 +96,7 @@ def stripe_webhook(request):
 
         )
         order.save()
-        cart.clear()
+        cart.remove()
     else:
 
         print('Unhandled event type {}'.format(event['type']))

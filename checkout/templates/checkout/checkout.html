@@ -38,15 +38,20 @@
     <div class="customer-shipping-details">
         <h1>Shipping Details</h1>
         <ul>
-            <li>Ship To : <strong> {{customer.full_name}} | {{customer.email}}</strong></li>
-            <li> Shipping Address : <strong> {{customer.address_line_1}}  {{customer.address_line_2}}, {{customer.city}},{{customer.state}},  {{customer.postal_code}}</strong></li>
-            <li> Content :  <strong>{{customer.phone}}</strong></li>
+        <li>Ship To : <strong>{{customer.full_name}} | {{customer.email}}</strong></li>
+        {% if not customer.address_line_1 or not customer.address_line_2 or not customer.city or not customer.state or not customer.postal_code or not customer.phone %}
+        <li><a class="text-danger bold" href="{% url 'profile' id=request.user.id %}"> <h2>Please update your address</h2></a></li>
+        {% else %}
+        <li>Shipping Address: <strong>{{ customer.address_line_1 }} {{ customer.address_line_2 }}, {{ customer.city }},
+                {{ customer.state }}, {{ customer.postal_code }}</strong></li>
+        <li>Content : <strong>{{ customer.phone }}</strong></li>
+
 
         </ul>
 
         
-            <button id="submitBtn"> Make Payment</button> <button> <a href="{% url 'profile' id=request.user.id %}">Update Shipping address</a></button>
-
+            <button class="btn btn-outline-danger" id="submitBtn"> Make Payment</button> <button class="btn btn-outline-info"> <a href="{% url 'profile' id=request.user.id %}">Update Shipping address</a></button>
+{% endif %}
     </div>
 
 <div class="card-items-details">

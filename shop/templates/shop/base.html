@@ -27,6 +27,7 @@
   {% url 'profile' request.user.id as profile %}
   {% url 'register' as register %}
   {% url 'order' as order %}
+  {% url 'index' as index %}
 
 
 
@@ -52,19 +53,23 @@
 
     <div class="collapse navbar-collapse" id="navmenu">
       <ul class="navbar-nav ms-auto">
+      
         {% if user.is_authenticated %}
         <li class="nav-item " > 
           <a  class="nav-link {% if request.path == logout %}active {% endif %} " href="{% url 'logout' %}">Logout</a>
         </li>
-        <li class="navbar-nav">
-          <a href="{% url 'cart' %}" class="nav-link {% if request.path == cart %}active {% endif %}">Cart | {% if cart %} {{ cart|length }}{% endif %}</a>
-
-        </li>
+          {% if not user.is_superuser %}
+          <li class="navbar-nav">
+            <a href="{% url 'cart' %}" class="nav-link {% if request.path == cart %}active{% endif %}">Cart | {% if cart %}
+              {{ cart|length }}{% endif %}</a>
+          </li>
+          {% endif %}
         <li class="navbar-nav">
           <a href="{% url 'profile' id=request.user.id %}" class="nav-link {% if request.path == profile %}active {% endif %} ">Profile</a>
         </li>
+        {% if not user.is_superuser %}
         <li class="navbar-nav">
-          <a href=" {% url 'order' %}" class="nav-link {% if request.path == order %}active {% endif %}">Your Order</a>
+          <a href=" {% url 'order' %}" class="nav-link {% if request.path == order %}active {% endif %}">Your Order {% endif %}</a>
         </li>
         {% else %}
         <li class="navbar-nav">
@@ -74,6 +79,13 @@
           <a href=" {% url 'register' %}" class="nav-link {% if request.path == register %}active {% endif %}">Register</a>
         </li>
         {% endif %}
+        {% if user.is_authenticated and user.is_superuser %}
+        <li class="navbar-nav">
+          <a href=" {% url 'index' %}" class="nav-link {% if request.path == index %}active {% endif %}">Admin</a>
+        </li>
+        {% endif %}
+
+
       </ul>
     </div>
 

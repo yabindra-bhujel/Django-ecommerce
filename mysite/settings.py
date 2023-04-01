@@ -24,23 +24,20 @@ SECRET_KEY = 'django-insecure-edw@tm^z%nonby^jfjs)awkz9$&^9uw221ljne$d_9(07i66^7
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-APPEND_SLASH = False
 
 
-ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = [
-    'https://a716-133-123-7-81.jp.ngrok.io',
-    
-]
+ALLOWED_HOSTS = []
 
 
 SESSION_COOKIE_AGE = 86400
 CART_SESSION_ID = ('cart')
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,13 +46,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mathfilters',
     'fontawesomefree',
+   
 
 
 
     'account',
     'shop',
     'checkout',
-    'controller',
+    'administration',
+    
 ]
 
 MIDDLEWARE = [
@@ -170,3 +169,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STRIPE_SECRET_KEY = 'sk_test_51M5ok1HEEvdlG8h96eeSWlAAiRgPMgyK70HdS7ykJCARy8VCbSmzV7JmmNC5hNKIZzslAvXhEOX5Nu88nmBU1bb500EKVRhGRp'
 STRIPE_PUBLISHABLE_KEY = 'pk_test_51M5ok1HEEvdlG8h9CGAFVUHDHjBOddf2bRJpHzg22L15K9njT5bQKMhy5HjUQlrVVRvF4spm0QgnPEDAo1H7iZCC007m42OPom'
 STRIPE_ENDPOINT_SECRET = 'whsec_689b09e63a8c1366e40c9a99a74ea515650a4cf13a6ad6657356415909a37e30'
+
+
+JAZZMIN_SETTINGS = {
+    'site_title': "Dajngo Ecommerce Application",
+    
+    "site_header": "Dajngo Ecommerce Application",
+    
+    
+    "site_brand": "Dajngo Ecommerce Application",
+    
+    
+    "site_logo": None,
+    
+    
+    "welcome_sign": "Welcome Your Dashbord",
+    
+    
+     "copyright": "Django Ecommerce.ltd",
+}

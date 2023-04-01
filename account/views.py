@@ -8,6 +8,7 @@ from checkout.forms import CustomerForm
 from django.contrib.auth.forms import UserCreationForm
 from .forms import UserRegisterForm
 from django.contrib.auth.forms import PasswordChangeForm
+from checkout.models import Order, OrderItem
 
 
 
@@ -95,4 +96,11 @@ def customerProfile(request, id):
 
 
 def userOrder(request):
-    return render(request, 'account/order.html')
+    order = Order.objects.all()
+    orderitem = OrderItem.objects.all()
+    
+    context = {
+        'order': order,
+        'orderitem': orderitem,
+    }
+    return render(request, 'account/order.html', context)

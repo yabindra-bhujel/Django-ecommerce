@@ -29,15 +29,12 @@
           <img src="{{object.first_images.url}}"  height="400px" class="d-block w-100" alt="{{object}}">
         </div>
         <div class="carousel-item">
-          {% if third_images %}
-          <img src="{{object.third_images.url}}" height="400px" class="d-block w-100" alt="">
-          {% endif %}
+          <img src="{{ object.third_images.url }}" height="400px" class="d-block w-100" alt="">
         </div>
         <div class="carousel-item">
-          {% if second_images %}
-          <img src="{{object.second_images.url}}" height="400px" class="d-block w-100" alt="">
-          {% endif %}
+          <img src="{{ object.second_images.url }}" height="400px" class="d-block w-100" alt="">
         </div>
+
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -53,21 +50,7 @@
     <h2>{{object.title}}</h2>
     <p style="width: 400px">{{object.description}}</p>
     <p><strong>Price: ${{object.price}}</strong></p>
-    <div class="mb-3">
-      <label class="form-label">Select size:</label>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="size" id="smallRadio" value="small" checked>
-        <label class="form-check-label" for="smallRadio">Small</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="size" id="mediumRadio" value="medium">
-        <label class="form-check-label" for="mediumRadio">Medium</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="size" id="largeRadio" value="large">
-        <label class="form-check-label" for="largeRadio">Large</label>
-      </div>
-    </div>
+    
     {% if messages %}
     {% for messages in messages %}
 
@@ -85,7 +68,7 @@
         </div>
 
         <div class="control">
-          <button class="button is-dark is-uppercase">Add to cart</button>
+          <button class="btn btn-secondary ">Add to cart</button>
         </div>
       </div>
     </form>

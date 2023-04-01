@@ -55,6 +55,7 @@ def productDetail(request, id):
     context = {
         "related_products": related_products,
         "object": obj,
+        'cart': cart,
     }
     return render(request, 'shop/product_detail.html', context)
 

@@ -3,5 +3,14 @@
 {% block title %}Cart | {% endblock %}
 
 {% block body %}
-<h2>Order details</h2>
+<div class="container">
+    {% if order and orderitem %}
+    <h3>Order Details</h3>
+    {% else %}
+    <h3>You Dont have any order</h3>
+
+
+
+    {% endif %}
+</div>
 {% endblock %}
