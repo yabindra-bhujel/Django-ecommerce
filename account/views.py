@@ -3,12 +3,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from checkout.models import Customer
 from checkout.forms import CustomerForm
 from django.contrib.auth.forms import UserCreationForm
 from .forms import UserRegisterForm
 from django.contrib.auth.forms import PasswordChangeForm
-from checkout.models import Order, OrderItem
+from shop.models import Order, OrderItem,Customer
 
 
 

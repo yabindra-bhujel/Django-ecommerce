@@ -27,7 +27,6 @@
   {% url 'profile' request.user.id as profile %}
   {% url 'register' as register %}
   {% url 'order' as order %}
-  {% url 'index' as index %}
 
 
 
@@ -58,16 +57,20 @@
         <li class="nav-item " > 
           <a  class="nav-link {% if request.path == logout %}active {% endif %} " href="{% url 'logout' %}">Logout</a>
         </li>
-          {% if not user.is_superuser %}
+        <li class="navbar-nav">
+          <a href="{% url 'profile' id=request.user.id %}"
+            class="nav-link {% if request.path == profile %}active {% endif %} ">Profile</a>
+        </li>
+        
+          {% if not user.is_superuser  and not user.is_staff %}
           <li class="navbar-nav">
             <a href="{% url 'cart' %}" class="nav-link {% if request.path == cart %}active{% endif %}">Cart | {% if cart %}
               {{ cart|length }}{% endif %}</a>
           </li>
-          {% endif %}
-        <li class="navbar-nav">
-          <a href="{% url 'profile' id=request.user.id %}" class="nav-link {% if request.path == profile %}active {% endif %} ">Profile</a>
-        </li>
-        {% if not user.is_superuser %}
+      
+
+       
+    
         <li class="navbar-nav">
           <a href=" {% url 'order' %}" class="nav-link {% if request.path == order %}active {% endif %}">Your Order {% endif %}</a>
         </li>
@@ -79,11 +82,19 @@
           <a href=" {% url 'register' %}" class="nav-link {% if request.path == register %}active {% endif %}">Register</a>
         </li>
         {% endif %}
+       
         {% if user.is_authenticated and user.is_superuser %}
         <li class="navbar-nav">
-          <a href=" {% url 'index' %}" class="nav-link {% if request.path == index %}active {% endif %}">Admin</a>
+          <a href=" {% url 'admin:index' %}" class="nav-link ">Main Admin</a>
         </li>
         {% endif %}
+
+
+          {% if user.is_authenticated and user.is_staff %}
+          <li class="navbar-nav">
+            <a href=" {% url 'product_admin:index' %}" class="nav-link ">Admin</a>
+          </li>
+          {% endif %}
 
 
       </ul>

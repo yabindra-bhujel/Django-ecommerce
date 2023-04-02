@@ -1,7 +1,6 @@
-from .models import Customer
 from django import forms
 
-from checkout.models import Order, Customer
+from shop.models import Order, Customer
 
 
 

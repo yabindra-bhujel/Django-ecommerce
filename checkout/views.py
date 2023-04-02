@@ -10,9 +10,8 @@ from django.db import transaction
 
 
 from checkout.forms import CustomerForm
-from checkout.models import Order, OrderItem, Customer
+from shop.models import Order, OrderItem, Customer,Product
 from shop.cart import Cart
-from shop.models import Product
 
 
 # Create your views here.

@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     'account',
     'shop',
     'checkout',
-    'administration',
     
 ]
 
@@ -172,12 +171,12 @@ STRIPE_ENDPOINT_SECRET = 'whsec_689b09e63a8c1366e40c9a99a74ea515650a4cf13a6ad665
 
 
 JAZZMIN_SETTINGS = {
-    'site_title': "Dajngo Ecommerce Application",
+    'site_title': "Dajngo Ecommerce ",
     
-    "site_header": "Dajngo Ecommerce Application",
+    "site_header": "Dajngo Ecommerce ",
     
     
-    "site_brand": "Dajngo Ecommerce Application",
+    "site_brand": "Dajngo Ecommerce ",
     
     
     "site_logo": None,
