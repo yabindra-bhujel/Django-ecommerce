@@ -1,5 +1,8 @@
 from django.apps import apps
 from django.contrib import admin
+from django.contrib.admin import ModelAdmin,AdminSite
+
+
 from .models import Product, Category, Order, OrderItem, Customer
 
 
@@ -14,7 +17,7 @@ admin.site.register(Order, AdminOrder)
 
 
 class AdminCustomer(admin.ModelAdmin):
-    pass
+    list_display = ['user', 'full_name', 'email', 'phone', 'postal_code']
 admin.site.register(Customer, AdminCustomer)
 
 class AdminCategory(admin.ModelAdmin):
@@ -31,30 +34,102 @@ admin.site.register(Product, AdminProduct)
 
 
 #  new pages for staff
-class ProductAdmin(admin.AdminSite):
+class StaffAdminsite(admin.AdminSite):
     site_header = ' Staff Pages'
     
+    
+class CategoryStaffAdminPermission(admin.ModelAdmin):
+    list_display = ['name', 'discptrion']
 
-class TestAdminPermission(admin.ModelAdmin):
+    def has_add_permission(self, request, obj=None):
+        return True
+
+    def has_change_permission(self, request, obj=None):
+        return True
+
+    def has_delete_permission(self, request, obj=None):
+        return True
+
+    def has_view_permission(self, request, obj=None):
+        return True
+    
+    
+class ProductStaffAdminPermission(admin.ModelAdmin):
+    list_display = ['title', 'user', 'price',
+                    'category', 'is_stock', 'product_code']
+    list_filter = ['is_stock',  'is_discountable', 'is_public']
+
+    def has_add_permission(self, request, obj=None):
+        return True
+
+    def has_change_permission(self, request, obj=None):
+        return True
+
+    def has_delete_permission(self, request, obj=None):
+        return True
+
+    def has_view_permission(self, request, obj=None):
+        return True
+    
+
+
+class CustomerStaffAdminPermission(admin.ModelAdmin):
+    list_display = ['user', 'full_name', 'email', 'phone', 'postal_code']
+    list_filter = ['is_active']
+    
     
     def has_add_permission(self, request, obj = None):
-        return True
+        return False
     
     
     def has_change_permission(self, request, obj = None):
-        return True
+        return False
     
     def has_delete_permission(self, request, obj = None):
-        return True
+        return False
     
     
     def has_view_permission(self, request, obj = None):
         return True
-    
 
-product_admin_site = ProductAdmin(name='product_admin')
-product_admin_site.register(Category, AdminCategory)
-product_admin_site.register(Product, AdminProduct)
-product_admin_site.register(Customer, AdminProduct)
-product_admin_site.register(Order, AdminProduct)
-product_admin_site.register(OrderItem, AdminProduct)
+
+class OrderStaffAdminPermission(admin.ModelAdmin):
+    list_display = ['user', 'paid', 'status','customer']
+    list_filter = ['status']
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_view_permission(self, request, obj=None):
+        return True
+
+
+class OrderItemStaffAdminPermission(admin.ModelAdmin):
+    list_display = ['user', 'quantity', 'price']
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_view_permission(self, request, obj=None):
+        return True
+
+
+
+product_admin_site = StaffAdminsite(name='product_admin')
+product_admin_site.register(Category, CategoryStaffAdminPermission)
+product_admin_site.register(Product, ProductStaffAdminPermission)
+product_admin_site.register(Customer, CustomerStaffAdminPermission)
+product_admin_site.register(Order, OrderStaffAdminPermission)
+product_admin_site.register(OrderItem, OrderItemStaffAdminPermission)
