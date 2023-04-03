@@ -29,7 +29,7 @@ class Product(models.Model):
     second_images = models.ImageField()
     third_images = models.ImageField()
     forth_images = models.ImageField(blank=True, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
     posted_at = models.DateTimeField(auto_now_add=True)
     price = models.BigIntegerField()
     is_stock = models.BooleanField(default=True)
@@ -117,10 +117,10 @@ class Order(models.Model):
 class OrderItem(models.Model):
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE)
-    products = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=0)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
     price = models.IntegerField(blank=True, null=True)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.quantity} of {self.products.title}"
+        return f"{self.quantity} of {self.product.title}"

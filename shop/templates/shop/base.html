@@ -61,16 +61,14 @@
           <a href="{% url 'profile' id=request.user.id %}"
             class="nav-link {% if request.path == profile %}active {% endif %} ">Profile</a>
         </li>
+
+            <li class="navbar-nav">
+              <a href="{% url 'cart' %}" class="nav-link {% if request.path == cart %}active{% endif %}">Cart | {% if cart %}
+                {{ cart|length }}{% endif %}</a>
+            </li>
+
         
           {% if not user.is_superuser  and not user.is_staff %}
-          <li class="navbar-nav">
-            <a href="{% url 'cart' %}" class="nav-link {% if request.path == cart %}active{% endif %}">Cart | {% if cart %}
-              {{ cart|length }}{% endif %}</a>
-          </li>
-      
-
-       
-    
         <li class="navbar-nav">
           <a href=" {% url 'order' %}" class="nav-link {% if request.path == order %}active {% endif %}">Your Order {% endif %}</a>
         </li>

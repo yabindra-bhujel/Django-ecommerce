@@ -10,7 +10,7 @@ from django.db import transaction
 
 
 from checkout.forms import CustomerForm
-from shop.models import Order, OrderItem, Customer,Product
+from shop.models import Order, OrderItem, Customer, Product
 from shop.cart import Cart
 
 
@@ -25,7 +25,9 @@ def stripe_config(request):
 
 @csrf_exempt
 def create_checkout_session(request):
+    customer = Customer.objects.filter(user=request.user).first()
     cart = Cart(request)
+
     if request.method == 'GET':
         domain_url = 'http://127.0.0.1:8000'
         stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -43,6 +45,26 @@ def create_checkout_session(request):
                     'quantity': item['quantity'],
                 }
                 line_items.append(line_item)
+                metadata = {
+                    'user_id': request.user.id,
+                    'user_email': request.user.email,
+                    'user_name': request.user.username,
+                    'customer_id': customer.id,
+                    'customer_name': customer.full_name,
+                    'customer_email': customer.email,
+                    'customer_address_2': customer.address_line_1,
+                    'customer_address_2': customer.address_line_2,
+                    'customer_city': customer.city,
+                    'customer_state': customer.state,
+                    'customer_country': customer.postal_code,
+                    'customer_zip': customer.phone,
+                    'products': item['product'].title,
+                    'products_id': item['product'].id,
+                    'products_quantity': item['quantity'],
+                    'products_price': item['product'].price,
+                    
+
+                }
 
             session = stripe.checkout.Session.create(
                 payment_method_types=['card'],
@@ -50,6 +72,8 @@ def create_checkout_session(request):
                 mode='payment',
                 success_url='http://127.0.0.1:8000/success',
                 cancel_url='http://127.0.0.1:8000/cancel',
+                metadata=metadata,
+
             )
             print(session)
             return JsonResponse({'sessionId': session['id']})
@@ -91,11 +115,24 @@ def stripe_webhook(request):
         order = Order.objects.create(
             order_no=event['data']['object']['id'],
             status='Ordered',
-            paid=True
+            paid=True,
+            user_id=metadata['user_id'],
+            customer_id=metadata['customer_id'],
+            product_id=metadata['products_id'],
+        )
+        product = Product.objects.get(id=int(metadata['products_id']))
+        order_item = OrderItem.objects.create(
+            product=product,
+            user_id =metadata['user_id'],
+            order = order,
+            quantity=metadata['products_quantity'],
+            price=metadata['products_price'],
 
         )
         order.save()
-        cart.remove()
+        order_item.save()
+        cart.clear()
+
     else:
 
         print('Unhandled event type {}'.format(event['type']))
@@ -109,27 +146,9 @@ def checkout(request, id):
     customer = get_object_or_404(Customer, id=id)
     user = request.user
 
-    # get the items in the cart
-    metadata = {
-        'customer_id': customer.id,
-        'customer_name': customer.full_name,
-        'customer_email': customer.email,
-        'customer_address_line_1': customer.address_line_1,
-        'customer_address_line_2': customer.address_line_2,
-        'customer_city': customer.city,
-        'customer_state': customer.state,
-        'customer_postal_code': customer.postal_code,
-        'customer_phone': customer.phone,
-        'user_id': request.user.id,
-        'user_email': request.user.email
-    }
-    print(metadata)
-
     cart = Cart(request)
-    print(cart.cart.items)
 
     session_id = request.GET.get('session_id')
-    print(session_id)
     if session_id:
         session = stripe.checkout.Session.retrieve(session_id)
 

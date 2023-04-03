@@ -1,18 +1,16 @@
 from django.apps import apps
 from django.contrib import admin
-from django.contrib.admin import ModelAdmin,AdminSite
-
-
 from .models import Product, Category, Order, OrderItem, Customer
 
 
 class AdminOrderItem(admin.ModelAdmin):
-    list_display = ['user', 'products','price','order']
+    list_display = ['user', 'product','price','order']
 admin.site.register(OrderItem, AdminOrderItem)
 
 
 class AdminOrder(admin.ModelAdmin):
-    pass
+    list_display = ['user', 'paid', 'status', 'customer']
+    list_filter = ['status']
 admin.site.register(Order, AdminOrder)
 
 
@@ -22,13 +20,14 @@ admin.site.register(Customer, AdminCustomer)
 
 class AdminCategory(admin.ModelAdmin):
     list_display = ['name', 'discptrion']
-
 admin.site.register(Category, AdminCategory)
 
 
 
 class AdminProduct(admin.ModelAdmin):
-    pass
+     list_display = ['title', 'user', 'price',
+                    'category', 'is_stock', 'product_code']
+     list_filter = ['is_stock',  'is_discountable', 'is_public']
 admin.site.register(Product, AdminProduct)
 
 
@@ -128,8 +127,13 @@ class OrderItemStaffAdminPermission(admin.ModelAdmin):
 
 
 product_admin_site = StaffAdminsite(name='product_admin')
+
 product_admin_site.register(Category, CategoryStaffAdminPermission)
+
 product_admin_site.register(Product, ProductStaffAdminPermission)
+
 product_admin_site.register(Customer, CustomerStaffAdminPermission)
+
 product_admin_site.register(Order, OrderStaffAdminPermission)
+
 product_admin_site.register(OrderItem, OrderItemStaffAdminPermission)

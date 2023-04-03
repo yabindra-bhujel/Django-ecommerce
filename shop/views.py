@@ -1,8 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView
-
 from shop.cart import Cart
 from shop.forms import AddtoCartForm
 from shop.models import Product, Category
@@ -35,21 +33,16 @@ def product_list(request):
 def productDetail(request, id):
     cart = Cart(request)
     obj = get_object_or_404(Product, id=id)
-
     if request.method == 'POST':
         form = AddtoCartForm(request.POST)
-
         if form.is_valid():
             quantity = form.cleaned_data['quantity']
-
             cart.add(product_id=id,
-                     quantity=quantity, update_quantity=False)
-
+                    quantity=quantity, update_quantity=False)
             messages.success(request, 'The product was added to the cart')
 
     else:
         form = AddtoCartForm()
-
     related_products = Product.objects.filter(
         category=obj.category).exclude(id=id)[:50]
     context = {
@@ -71,15 +64,12 @@ def CartItem(request):
     remove_from_cart = request.GET.get('remove_from_cart', '')
     change_quantity = request.GET.get('change_quantity', '')
     quantity = request.GET.get('quantity', 0)
-
     if remove_from_cart:
         cart_item.remove(remove_from_cart)
-
         return redirect('cart')
 
     if change_quantity:
         cart_item.add(change_quantity, quantity, True)
-
         return redirect('cart')
     else:
         return render(request, 'shop/cart.html', {'cart_item': cart_item,

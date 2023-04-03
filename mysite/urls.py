@@ -7,7 +7,7 @@ from shop.admin import product_admin_site
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('productadmin/', product_admin_site.urls),
+    path('staffadmin/', product_admin_site.urls),
     path('account/', include('account.urls')),
     path('', include('shop.urls')),
     path('', include('checkout.urls')),
