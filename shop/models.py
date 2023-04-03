@@ -94,8 +94,7 @@ class Order(models.Model):
         (DELIVERED, 'Delivered')
     )
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    product = models.ForeignKey(
-        Product, related_name='items', on_delete=models.CASCADE, null=True)
+    products = models.ManyToManyField(Product)
     order_no = models.CharField(max_length=500)
     user = models.ForeignKey(User, related_name='orders',
                              on_delete=models.CASCADE, null=True)
@@ -108,7 +107,7 @@ class Order(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f'Order {self.order_no}'
+        return self.order_no
 
     def get_absolute_url(self):
         return reverse('order', args=[self.id])
@@ -117,10 +116,11 @@ class Order(models.Model):
 class OrderItem(models.Model):
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ManyToManyField(Product)
     quantity = models.IntegerField(default=1)
     price = models.IntegerField(blank=True, null=True)
+    total_price = models.IntegerField(blank=True, null=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.quantity} of {self.product.title}"
+        return self.user.username

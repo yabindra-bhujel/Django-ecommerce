@@ -1,3 +1,4 @@
+import json
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
@@ -13,8 +14,13 @@ from checkout.forms import CustomerForm
 from shop.models import Order, OrderItem, Customer, Product
 from shop.cart import Cart
 
+import secrets
+
+generate_no = secrets.randbelow(1000000)
+generate_no = str(generate_no).zfill(6)
 
 # Create your views here.
+
 
 @csrf_exempt
 def stripe_config(request):
@@ -56,29 +62,31 @@ def create_checkout_session(request):
                     'customer_address_2': customer.address_line_2,
                     'customer_city': customer.city,
                     'customer_state': customer.state,
-                    'customer_country': customer.postal_code,
-                    'customer_zip': customer.phone,
+                    'customer_zip': customer.postal_code,
+                    'customer_phone': customer.phone,
                     'products': item['product'].title,
                     'products_id': item['product'].id,
                     'products_quantity': item['quantity'],
                     'products_price': item['product'].price,
-                    
-
+                    'total_amount': cart.get_total_cost(),
+                    'clear': cart.clear(),
                 }
+                
+
 
             session = stripe.checkout.Session.create(
                 payment_method_types=['card'],
-                line_items=line_items,
                 mode='payment',
                 success_url='http://127.0.0.1:8000/success',
                 cancel_url='http://127.0.0.1:8000/cancel',
                 metadata=metadata,
-
+                line_items=line_items,
             )
-            print(session)
             return JsonResponse({'sessionId': session['id']})
         except Exception as e:
             return JsonResponse({'error': str(e)})
+
+
 
 
 def success(request):
@@ -111,27 +119,32 @@ def stripe_webhook(request):
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
         metadata = event['data']['object']['metadata']
+        product = Product.objects.get(id=int(metadata['products_id']))
+        
+
 
         order = Order.objects.create(
-            order_no=event['data']['object']['id'],
+            order_no=generate_no,
             status='Ordered',
             paid=True,
             user_id=metadata['user_id'],
             customer_id=metadata['customer_id'],
-            product_id=metadata['products_id'],
         )
-        product = Product.objects.get(id=int(metadata['products_id']))
+        order.products.set([product])
+        
         order_item = OrderItem.objects.create(
-            product=product,
-            user_id =metadata['user_id'],
-            order = order,
+            user_id=metadata['user_id'],
+            order=order,
             quantity=metadata['products_quantity'],
             price=metadata['products_price'],
-
+            total_price=metadata['total_amount']
         )
+        order_item.product.set([product])
         order.save()
         order_item.save()
+        cart.remove(product_id=product)
         cart.clear()
+        
 
     else:
 
@@ -140,30 +153,10 @@ def stripe_webhook(request):
 
 
 def checkout(request, id):
-
-    products = Product.objects.all()
     cart = Cart(request)
     customer = get_object_or_404(Customer, id=id)
-    user = request.user
 
     cart = Cart(request)
-
-    session_id = request.GET.get('session_id')
-    if session_id:
-        session = stripe.checkout.Session.retrieve(session_id)
-
-        # If the session has been completed, create an order
-        if session['payment_status'] == 'paid':
-            order = Order.objects.get(order_no=session['id'])
-            order.status = 'Ordered'
-            order.paid = True
-            order.user = user
-            order.product = cart.cart.items
-            order.save()
-
-            # Clear the cart
-            cart.clear()
-
     context = {'customer': customer, 'cart_items': cart}
 
     return render(request, 'checkout/checkout.html', context)

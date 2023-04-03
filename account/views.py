@@ -95,8 +95,8 @@ def customerProfile(request, id):
 
 
 def userOrder(request):
-    order = Order.objects.all()
-    orderitem = OrderItem.objects.all()
+    order = Order.objects.filter(user = request.user)
+    orderitem = OrderItem.objects.filter(user = request.user)
     
     context = {
         'order': order,

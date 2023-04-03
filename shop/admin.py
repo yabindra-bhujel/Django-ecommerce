@@ -4,7 +4,7 @@ from .models import Product, Category, Order, OrderItem, Customer
 
 
 class AdminOrderItem(admin.ModelAdmin):
-    list_display = ['user', 'product','price','order']
+    list_display = ['user', 'price', 'order', 'quantity']
 admin.site.register(OrderItem, AdminOrderItem)
 
 
