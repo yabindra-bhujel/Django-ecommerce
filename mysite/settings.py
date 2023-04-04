@@ -35,7 +35,6 @@ SESSION_COOKIE_AGE = 86400
 CART_SESSION_ID = ('cart')
 
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -48,14 +47,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mathfilters',
     'fontawesomefree',
-   
+
 
 
 
     'account',
     'shop',
     'checkout',
-    
+
 ]
 
 MIDDLEWARE = [
@@ -74,7 +73,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'Templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -106,15 +105,13 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dc5q416hccfd7h',
-        'USER': 'tdlkkpcnddolva',
-        'PASSWORD': 'fcd29d45fa5eb5ad7beb95be13f45a225c62f31a020d3a62254cb6b16c2f9483',
-        'HOST': 'ec2-3-93-160-246.compute-1.amazonaws.com',
+        'NAME': 'dd29rea34vvv7m',
+        'USER': 'ewbdkfylkjhqox',
+        'PASSWORD': 'b2e0daf37a7880c1c61d6e2ec76a0c5e634979d006e9065ee30edf3cf4dedcd3',
+        'HOST': 'ec2-3-234-204-26.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
-
-
 
 
 # Password validation
@@ -180,18 +177,18 @@ STRIPE_ENDPOINT_SECRET = 'whsec_689b09e63a8c1366e40c9a99a74ea515650a4cf13a6ad665
 
 JAZZMIN_SETTINGS = {
     'site_title': "Dajngo Ecommerce ",
-    
+
     "site_header": "Dajngo Ecommerce ",
-    
-    
+
+
     "site_brand": "Dajngo Ecommerce ",
-    
-    
+
+
     "site_logo": None,
-    
-    
+
+
     "welcome_sign": "Welcome Your Dashbord",
-    
-    
-     "copyright": "Django Ecommerce.ltd",
+
+
+    "copyright": "Django Ecommerce.ltd",
 }
