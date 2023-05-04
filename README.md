@@ -16,9 +16,16 @@ Pages
 - Manage  Shipping Details
 - Add to Cart
 - Manage Cart
+- Make Payment
 
 Payment 
--Payment with stripe (only create card)
+- Payment with stripe (only create card)
+
+
+
+
+- Admin
+- Staff
 
 
 # Tools
