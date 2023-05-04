@@ -22,7 +22,7 @@ Payment
 - Payment with stripe (only create card)
 
 
-
+Other Function
 
 - Admin
 - Staff
